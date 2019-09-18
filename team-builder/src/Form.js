@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function Form(props) {
-    const { initialTeamMembersForm } = props;
-    const { name, email, role} = initialTeamMembersForm
+    const { teamMembersForm, addTeamMember, onFormInput } = props;
+    const { name, email, role} = teamMembersForm
+
+    const isDisabled = () => {
+        return !name || !email || !role;
+    }
 
     return (
-        <form>
-            <label htmlFor="nameInput">Name</label>
-            <input maxLength={50} value={name} id='nameInput' type='text'/>
+        <form onSubmit={addTeamMember}>
+            <label htmlFor="name">Name</label>
+            <input onChange={onFormInput} maxLength={50} value={name} id='name' type='text'/>
 
-            <label htmlFor="emailInput">Email</label>
-            <input value={email} id='emailInput' type='text'/>
+            <label htmlFor="email">Email</label>
+            <input onChange={onFormInput} value={email} id='email' type='text'/>
 
-            <label htmlFor="roleInput">Role</label>
-            <input value={role} id='roleInput' type='text'/>
+            <label htmlFor="role">Role</label>
+            <input onChange={onFormInput} value={role} id='role' type='text'/>
+
+            <button disabled={isDisabled()}>Submit</button>
         </form>
     )
 }

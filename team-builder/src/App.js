@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import uuid from 'uuid';
@@ -14,24 +13,29 @@ const initialTeamMembersForm = {
 const initialTeamMembersList = [];
 
 function App() {
-
   const [teamMembersList, setTeamMembersList] = useState(initialTeamMembersList);
   const [teamMembersForm, setTeamMembersForm] = useState(initialTeamMembersForm)
 
-  // setTeamMembersList({ id: uuid(), name: '', email: '', role: '' });
+  const onFormInput = e => {
+    setTeamMembersForm({...teamMembersForm, [e.target.id]: e.target.value});
+  }
+
   const addTeamMember = e => {
+    e.preventDefault();
     const newFriend = {
       id: uuid(),
       name: teamMembersForm.name,
       email: teamMembersForm.email,
       role: teamMembersForm.role,
     }
+    setTeamMembersList(initialTeamMembersList.concat(newFriend));
+    setTeamMembersForm(initialTeamMembersForm);
   }
 
   return (
     <div className="App">
-      <Form initialTeamMembersForm={initialTeamMembersForm} />
-      {teamMembersList.map(member => (<p key={member.id}>name: {member.name}, email: {member.email}, role: {member.role}</p>))}
+      <Form teamMembersForm={teamMembersForm} addTeamMember={addTeamMember} onFormInput={onFormInput} />
+      {teamMembersList.map(member => (<div key={member.id}>Name: {member.name}, Email: {member.email}, Role: {member.role}</div>))}
     </div>
   );
 }
